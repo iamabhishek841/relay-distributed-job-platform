@@ -1,0 +1,26 @@
+name: cleanup ci diagnosis branch
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Delete diagnosis branch
+        run: git push origin --delete ci-backend-diagnosis || true
+      - name: Remove one-time cleanup workflow
+        run: |
+          rm .github/workflows/cleanup-ci-diagnosis.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/cleanup-ci-diagnosis.yml
+          git commit -m "chore: remove CI diagnosis cleanup workflow"
+          git push origin HEAD:main
