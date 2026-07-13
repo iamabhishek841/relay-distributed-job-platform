@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-relay}
+      POSTGRES_USER: ${POSTGRES_USER:-relay}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-relay}
+    ports:
+      - "5432:5432"
+    volumes:
+      - relay-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-relay} -d ${POSTGRES_DB:-relay}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  relay:
+    build:
+      context: .
+    environment:
+      RELAY_DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-relay}
+      RELAY_DB_USER: ${POSTGRES_USER:-relay}
+      RELAY_DB_PASSWORD: ${POSTGRES_PASSWORD:-relay}
+      RELAY_WORKER_COUNT: ${RELAY_WORKER_COUNT:-8}
+      RELAY_LEASE_SECONDS: ${RELAY_LEASE_SECONDS:-10}
+      RELAY_HEARTBEAT_SECONDS: ${RELAY_HEARTBEAT_SECONDS:-2}
+      RELAY_EVENT_SAMPLE_RATE: ${RELAY_EVENT_SAMPLE_RATE:-0.08}
+      RELAY_ALLOWED_ORIGINS: http://localhost:8080,http://localhost:5173
+      DB_POOL_SIZE: 16
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus:latest
+    profiles: ["observability"]
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - relay
+
+  grafana:
+    image: grafana/grafana:latest
+    profiles: ["observability"]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: relay
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+volumes:
+  relay-postgres:

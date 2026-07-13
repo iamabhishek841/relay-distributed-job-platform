@@ -1,0 +1,38 @@
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+
+spring:
+  application:
+    name: relay
+  flyway:
+    enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+relay:
+  worker-count: ${RELAY_WORKER_COUNT:8}
+  lease-seconds: ${RELAY_LEASE_SECONDS:10}
+  heartbeat-seconds: ${RELAY_HEARTBEAT_SECONDS:2}
+  claim-poll-millis: ${RELAY_CLAIM_POLL_MILLIS:120}
+  event-sample-rate: ${RELAY_EVENT_SAMPLE_RATE:0.08}
+  allowed-origins: ${RELAY_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:8080}
+  max-burst-size: ${RELAY_MAX_BURST_SIZE:10000}
+  workers-enabled: ${RELAY_WORKERS_ENABLED:true}
+  recovery-enabled: ${RELAY_RECOVERY_ENABLED:true}
+
+logging:
+  level:
+    root: INFO
+    dev.relay: INFO

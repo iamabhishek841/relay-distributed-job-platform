@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: relay-platform
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: RELAY_WORKER_COUNT
+        value: "8"
+      - key: RELAY_LEASE_SECONDS
+        value: "10"
+      - key: RELAY_HEARTBEAT_SECONDS
+        value: "2"
+      - key: RELAY_EVENT_SAMPLE_RATE
+        value: "0.08"
+      - key: DB_POOL_SIZE
+        value: "12"
+      - key: JAVA_OPTS
+        value: "-XX:MaxRAMPercentage=75.0"
