@@ -3,6 +3,7 @@ services:
     name: relay-platform
     runtime: docker
     plan: free
+    region: frankfurt
     dockerfilePath: ./Dockerfile
     healthCheckPath: /actuator/health
     envVars:
