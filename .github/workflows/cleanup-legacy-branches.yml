@@ -1,0 +1,26 @@
+name: cleanup legacy branches
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Delete all remote branches except main
+        run: |
+          git branch -r --format='%(refname:short)' \
+            | sed 's#^origin/##' \
+            | grep -v '^main$' \
+            | grep -v '^HEAD$' \
+            | while read branch; do
+                echo "Deleting $branch"
+                git push origin --delete "$branch" || true
+              done
