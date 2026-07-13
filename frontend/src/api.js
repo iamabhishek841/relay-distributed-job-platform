@@ -34,10 +34,10 @@ export const api = {
   jobs: (status = '') =>
     request(`/api/jobs?limit=80${status ? `&status=${encodeURIComponent(status)}` : ''}`),
   attempts: (jobId) => request(`/api/jobs/${jobId}/attempts`),
-  burst: (count = 1000) =>
+  burst: (count = 1000, durationMs = 120) =>
     request('/api/control/burst', {
       method: 'POST',
-      body: JSON.stringify({ count, durationMs: 120, tenantId: 'burst-tenant' })
+      body: JSON.stringify({ count, durationMs, tenantId: 'burst-tenant' })
     }),
   inject503: () =>
     request('/api/control/inject-503', {
