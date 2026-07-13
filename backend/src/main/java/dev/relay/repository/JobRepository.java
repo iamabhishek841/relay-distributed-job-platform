@@ -451,7 +451,7 @@ public class JobRepository {
                 SELECT status, COUNT(*) AS count
                 FROM jobs
                 GROUP BY status
-                """, rs -> counts.put(rs.getString("status"), rs.getLong("count")));
+                """, (org.springframework.jdbc.core.RowCallbackHandler) rs -> counts.put(rs.getString("status"), rs.getLong("count")));
         for (JobStatus status : JobStatus.values()) {
             counts.putIfAbsent(status.name(), 0L);
         }
