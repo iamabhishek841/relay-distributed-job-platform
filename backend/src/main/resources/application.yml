@@ -7,9 +7,6 @@ spring:
     name: relay
   flyway:
     enabled: true
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
 
 management:
   endpoints:
