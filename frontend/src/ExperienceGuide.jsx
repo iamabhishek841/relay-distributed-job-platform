@@ -98,11 +98,14 @@ export default function ExperienceGuide() {
 
       setActiveStep(4);
       const duplicate = await api.duplicate();
+      const finalSnapshot = await api.snapshot();
+      const activeWorkers = (finalSnapshot.workers || []).filter((worker) => worker.status === 'ACTIVE').length;
       setResults((current) => ({
         ...current,
         duplicateRequests: duplicate.requests,
         duplicateResponses: duplicate.duplicateResponses,
-        uniqueJobs: duplicate.uniqueJobs
+        uniqueJobs: duplicate.uniqueJobs,
+        activeWorkers
       }));
       setCompleted([0, 1, 2, 3, 4]);
       setActiveStep(-1);
@@ -182,7 +185,7 @@ export default function ExperienceGuide() {
               <Result label="503 jobs" value={results.retryJobs} />
               <Result label="Duplicates" value={results.duplicateResponses} />
               <Result label="Unique jobs" value={results.uniqueJobs} />
-              <Result label="Lost jobs" value="0" />
+              <Result label="Active workers" value={results.activeWorkers} />
             </div>
           )}
 
