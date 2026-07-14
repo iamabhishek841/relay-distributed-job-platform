@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { api } from './api.js';
 import './experience.css';
+import './polish.css';
 
 const scenarioSteps = [
   {
@@ -197,7 +198,13 @@ export default function ExperienceGuide() {
           </div>
         </aside>
       </div>
-      <button className="control-plane-jump" onClick={scrollToControlPlane}>LIVE CONTROL PLANE <span>↓</span></button>
+      <button className="control-plane-jump" onClick={scrollToControlPlane}>
+        <span className="jump-copy">
+          <strong>EXPLORE LIVE CONTROL PLANE</strong>
+          <small>Topology · workers · queue · execution events</small>
+        </span>
+        <span className="jump-arrow">↓</span>
+      </button>
     </section>
   );
 }
