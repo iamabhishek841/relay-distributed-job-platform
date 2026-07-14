@@ -1,0 +1,123 @@
+.experience-shell {
+  border-bottom: 1px solid rgba(112, 225, 193, 0.12);
+  background:
+    radial-gradient(circle at 12% 14%, rgba(112, 225, 193, 0.15), transparent 29%),
+    radial-gradient(circle at 84% 12%, rgba(122, 167, 255, 0.15), transparent 31%),
+    linear-gradient(180deg, #0a0f16 0%, #0b1119 58%, #0a0f16 100%);
+}
+
+.experience-shell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(112, 225, 193, 0.028));
+}
+
+.experience-lede {
+  color: #b2bdcb;
+}
+
+.experience-proof {
+  color: #7f8c9d;
+}
+
+.problem-card {
+  border-color: #273544;
+  background: rgba(14, 21, 29, 0.86);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+.problem-card p {
+  color: #94a1b2;
+}
+
+.scenario-console {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 28%),
+    rgba(12, 18, 26, 0.97);
+}
+
+.control-plane-jump {
+  min-width: 390px;
+  min-height: 68px;
+  justify-content: space-between;
+  gap: 28px;
+  margin: 30px auto 0;
+  padding: 11px 16px 11px 20px;
+  border: 1px solid rgba(112, 225, 193, 0.3);
+  border-radius: 999px;
+  background: rgba(11, 18, 25, 0.88);
+  color: #dce5ef;
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.24),
+    inset 0 0 28px rgba(112, 225, 193, 0.025);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.control-plane-jump:hover {
+  transform: translateY(-2px);
+  border-color: rgba(112, 225, 193, 0.58);
+  background: rgba(15, 25, 33, 0.96);
+}
+
+.jump-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.jump-copy strong {
+  color: #a8f3dd;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.jump-copy small {
+  color: #8593a5;
+  font-size: 9px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.01em;
+}
+
+.control-plane-jump .jump-arrow {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(112, 225, 193, 0.34);
+  border-radius: 50%;
+  background: rgba(112, 225, 193, 0.07);
+  color: #70e1c1;
+  font-size: 18px;
+  animation: relay-scroll-cue 1.8s ease-in-out infinite;
+}
+
+@keyframes relay-scroll-cue {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control-plane-jump .jump-arrow {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .control-plane-jump {
+    min-width: 0;
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .jump-copy small {
+    max-width: 230px;
+  }
+}
